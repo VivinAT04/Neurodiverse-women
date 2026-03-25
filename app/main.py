@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.db import engine, Base
 from app import models
-from app.routes import users, moods, tasks, assistant
+from app.routes import users, moods, tasks, assistant, auth
 
 app = FastAPI()
 
@@ -11,6 +11,7 @@ def startup():
     Base.metadata.create_all(bind=engine)
 
 
+app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(moods.router)
 app.include_router(tasks.router)

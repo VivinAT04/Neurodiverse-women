@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class UserCreate(BaseModel):
     name: str
     email: str
+    password: str
 
 
 class UserResponse(BaseModel):
@@ -16,6 +17,16 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
 
 
 class MoodCreate(BaseModel):
