@@ -10,6 +10,7 @@ A FastAPI backend for an accessibility-focused support app designed to help neur
 - Task management (create, update, view)
 - Assistant suggestions based on mood and tasks
 - Swagger UI for API testing
+- JWT-protected routes (in progress)
 
 ## Tech Stack
 
