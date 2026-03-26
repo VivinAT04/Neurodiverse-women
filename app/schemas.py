@@ -30,10 +30,8 @@ class TokenResponse(BaseModel):
 
 
 class MoodCreate(BaseModel):
-    user_id: int
     mood: str
     note: Optional[str] = None
-
 
 class MoodResponse(BaseModel):
     id: int
@@ -47,7 +45,6 @@ class MoodResponse(BaseModel):
 
 
 class TaskCreate(BaseModel):
-    user_id: int
     title: str
     description: Optional[str] = None
 
