@@ -1,5 +1,7 @@
+import os
 from datetime import datetime, timedelta, timezone
 
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
@@ -9,11 +11,13 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from app.db import get_db
 
+load_dotenv()
+
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-SECRET_KEY = "aksess_super_secret_key_change_this_later"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -55,7 +59,10 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=schemas.TokenResponse)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
     user = db.query(models.User).filter(models.User.email == form_data.username).first()
 
     if not user:
@@ -64,7 +71,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     if not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
-    access_token = create_access_token(data={"sub": str(user.id), "email": user.email})
+    access_token = create_access_token(
+        data={"sub": str(user.id), "email": user.email}
+    )
 
     return {
         "access_token": access_token,
