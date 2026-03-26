@@ -1,145 +1,90 @@
-# Aksess Backend
+# Aksess Backend API
 
-A FastAPI backend for an accessibility-focused support app designed to help neurodivergent women manage tasks, track moods, and receive assistant guidance.
+## Overview
+
+A secure FastAPI backend application that supports user authentication, mood tracking, task management, and personalized assistant responses.
 
 ## Features
 
-- User registration and login with JWT authentication
-- Password hashing for secure storage
+- JWT Authentication (Register/Login)
+- Protected routes
 - Mood tracking system
-- Task management (create, update, view)
-- Assistant suggestions based on mood and tasks
-- Swagger UI for API testing
-- JWT-protected routes (in progress)
+- Task management system
+- Assistant feedback system
 
 ## Tech Stack
 
 - FastAPI
+- Python
 - SQLite
 - SQLAlchemy
-- Pydantic
-- Passlib (bcrypt)
-- Python-JOSE (JWT)
+- python-jose
+- passlib
+- bcrypt
 
-## Project Structure
+## Setup
 
-aksess-backend/
-├── app/
-│ ├── routes/
-│ │ ├── auth.py
-│ │ ├── users.py
-│ │ ├── moods.py
-│ │ ├── tasks.py
-│ │ └── assistant.py
-│ ├── db.py
-│ ├── main.py
-│ ├── models.py
-│ ├── schemas.py
-│ └── crud.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+### 1. Clone repository
 
-## API Endpoints
+git clone <your-repo-link>
+cd aksess-backend
 
-Auth:
+### 2. Create virtual environment
 
-- POST /auth/register → Register new user
-- POST /auth/login → Login and get JWT token
-
-Users:
-
-- GET /users/{user_id} → Get user details
-
-Moods:
-
-- POST /moods/ → Create mood entry
-- GET /moods/{user_id} → Get user moods
-
-Tasks:
-
-- POST /tasks/ → Create task
-- GET /tasks/{user_id} → Get tasks
-- PUT /tasks/{task_id} → Update task
-
-Assistant:
-
-- GET /assistant/{user_id} → Get suggestions
-
-## Authentication
-
-Register:
-
-POST /auth/register
-
-{
-"name": "Vivin",
-"email": "vivin@test.com",
-"password": "test1234"
-}
-
-Login:
-
-POST /auth/login
-
-{
-"email": "vivin@test.com",
-"password": "test1234"
-}
-
-Response:
-
-{
-"access_token": "your-token",
-"token_type": "bearer"
-}
-
-## Run Locally
-
-git clone https://github.com/VivinAT04/Neurodiverse-women.git  
-cd Neurodiverse-women
-
-python3 -m venv venv  
+python -m venv venv
 source venv/bin/activate
+
+### 3. Install dependencies
 
 pip install -r requirements.txt
 
+### 4. Create .env file
+
+SECRET_KEY=your_secret_key_here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+
+### 5. Run server
+
 uvicorn app.main:app --reload
 
-Open:
+## API Endpoints
+
+Auth
+POST /auth/register
+POST /auth/login
+
+Users
+GET /users/me
+GET /users/{user_id}
+
+Moods
+POST /moods/
+GET /moods/
+
+Tasks
+POST /tasks/
+GET /tasks/
+PUT /tasks/{task_id}
+
+Assistant
+GET /assistant/
+
+## Testing
+
+Open Swagger UI:
 http://127.0.0.1:8000/docs
 
-## Workflow
+## Example Flow
 
 1. Register user
-2. Login to get token
-3. Create moods
-4. Create tasks
-5. Update tasks
-6. Get assistant suggestions
-
-## Assistant Logic
-
-- If mood is anxious → suggest breathing exercise
-- If many pending tasks → suggest starting small
-- If tasks completed → show positive feedback
-
-## Notes
-
-- Passwords are hashed using bcrypt
-- JWT used for authentication
-- SQLite used for development
-- Backend MVP ready
-
-## Future Improvements
-
-- Add JWT protection to routes
-- Connect frontend UI
-- AI-based assistant
-- Environment variables for secrets
-- Deploy to cloud (AWS/Render)
-- Use PostgreSQL instead of SQLite
+2. Login and get token
+3. Click Authorize in Swagger
+4. Create mood
+5. Create task
+6. Update task
+7. Get assistant response
 
 ## Author
 
-Vivin A T
+Vivin Anitha Thambidurai
